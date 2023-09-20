@@ -5,10 +5,10 @@ from aws_cdk import (
     aws_apigateway as api_gw,
     aws_sns as sns,
     aws_iam as iam,
-    SecretValue,
-    aws_codepipeline as codepipeline,
-    aws_codepipeline_actions as codepipeline_actions,
-    aws_codebuild as codebuild
+    # SecretValue,
+    # aws_codepipeline as codepipeline,
+    # aws_codepipeline_actions as codepipeline_actions,
+    # aws_codebuild as codebuild
     
 )
 from constructs import Construct
@@ -17,33 +17,6 @@ class InterviewProjectStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
-
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         # Create SNS Topic 
@@ -138,46 +111,46 @@ class InterviewProjectStack(Stack):
         
         
         
-        # Create a CodePipeline
-        pipeline = codepipeline.Pipeline(self, 'myMicroServices',
-            pipeline_name='myMicroServices'
-        )
+        # # Create a CodePipeline
+        # pipeline = codepipeline.Pipeline(self, 'myMicroServices',
+        #     pipeline_name='myMicroServices'
+        # )
 
-        # Dev Stage
-        source_output = codepipeline.Artifact()
-        source_action = codepipeline_actions.GitHubSourceAction(
-            action_name='GitHub_Source',
-            owner='bharat-sunny',
-            repo='microservice',
-            branch='main',  # Change to your desired branch
-            oauth_token=SecretValue.secrets_manager('AWS'),  # Store your GitHub token in AWS Secrets Manager
-            output=source_output
-        )
+        # # Dev Stage
+        # source_output = codepipeline.Artifact()
+        # source_action = codepipeline_actions.GitHubSourceAction(
+        #     action_name='GitHub_Source',
+        #     owner='bharat-sunny',
+        #     repo='microservice',
+        #     branch='main',  # Change to your desired branch
+        #     oauth_token=SecretValue.secrets_manager('AWS'),  # Store your GitHub token in AWS Secrets Manager
+        #     output=source_output
+        # )
 
-        dev_stage = pipeline.add_stage(
-            stage_name='Dev',
-            actions=[source_action]
-        )
+        # dev_stage = pipeline.add_stage(
+        #     stage_name='Dev',
+        #     actions=[source_action]
+        # )
 
-        # To be uncommented when additional stages are needed
+        # # To be uncommented when additional stages are needed
 
-        # Test Stage
-        test_build_project = codebuild.PipelineProject(
-            self, 'TestBuildProject',
-            build_spec=codebuild.BuildSpec.from_source_filename('buildspec-test.yml'),  # Create a buildspec file for your test stage
-            environment=codebuild.BuildEnvironment(build_image=codebuild.LinuxBuildImage.STANDARD_4_0),
-        )
+        # # Test Stage
+        # test_build_project = codebuild.PipelineProject(
+        #     self, 'TestBuildProject',
+        #     build_spec=codebuild.BuildSpec.from_source_filename('buildspec-test.yml'),  # Create a buildspec file for your test stage
+        #     environment=codebuild.BuildEnvironment(build_image=codebuild.LinuxBuildImage.STANDARD_4_0),
+        # )
 
-        test_action = codepipeline_actions.CodeBuildAction(
-            action_name='Test_Build',
-            input=source_output,
-            project=test_build_project
-        )
+        # test_action = codepipeline_actions.CodeBuildAction(
+        #     action_name='Test_Build',
+        #     input=source_output,
+        #     project=test_build_project
+        # )
 
-        test_stage = pipeline.add_stage(
-            stage_name='Test',
-            actions=[test_action]
-        )
+        # test_stage = pipeline.add_stage(
+        #     stage_name='Test',
+        #     actions=[test_action]
+        # )
 #
 #         # Deploy Stage
 #         deploy_build_project = codebuild.PipelineProject(

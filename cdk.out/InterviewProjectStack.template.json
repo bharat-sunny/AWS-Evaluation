@@ -1,0 +1,1742 @@
+{
+ "Resources": {
+  "MyTopic86869434": {
+   "Type": "AWS::SNS::Topic",
+   "Properties": {
+    "DisplayName": "My SNS Topic",
+    "TopicName": "MyTopicName"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MyTopic/Resource"
+   }
+  },
+  "UsersTable9725E9C8": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "user_id",
+      "AttributeType": "S"
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "user_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "TableName": "UsersTable"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/UsersTable/Resource"
+   }
+  },
+  "OrdersTable315BB997": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "order_id",
+      "AttributeType": "S"
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "order_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "ProvisionedThroughput": {
+     "ReadCapacityUnits": 5,
+     "WriteCapacityUnits": 5
+    },
+    "TableName": "OrdersTable"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/OrdersTable/Resource"
+   }
+  },
+  "UsersServiceServiceRole81B17718": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/UsersService/ServiceRole/Resource"
+   }
+  },
+  "UsersServiceServiceRoleDefaultPolicy21D26479": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "ses:VerifyEmailIdentity",
+       "Effect": "Allow",
+       "Resource": "*"
+      },
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "UsersTable9725E9C8",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "UsersServiceServiceRoleDefaultPolicy21D26479",
+    "Roles": [
+     {
+      "Ref": "UsersServiceServiceRole81B17718"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/UsersService/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "UsersService20E012C1": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-724126532640-us-east-1",
+     "S3Key": "ac38b0d5a51a538151252e88028b3cc432b939c29e9c886c428d0675a2a0afc7.zip"
+    },
+    "FunctionName": "userService",
+    "Handler": "users.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "UsersServiceServiceRole81B17718",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.8"
+   },
+   "DependsOn": [
+    "UsersServiceServiceRoleDefaultPolicy21D26479",
+    "UsersServiceServiceRole81B17718"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/UsersService/Resource",
+    "aws:asset:path": "asset.ac38b0d5a51a538151252e88028b3cc432b939c29e9c886c428d0675a2a0afc7",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "NotificationsServiceServiceRole3DBE5E33": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/NotificationsService/ServiceRole/Resource"
+   }
+  },
+  "NotificationsServiceServiceRoleDefaultPolicy1FE8E538": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "NotificationsServiceServiceRoleDefaultPolicy1FE8E538",
+    "Roles": [
+     {
+      "Ref": "NotificationsServiceServiceRole3DBE5E33"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/NotificationsService/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "NotificationsService2902FDF1": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-724126532640-us-east-1",
+     "S3Key": "7aba441121050fa408e6173171e4fe59adfc0912c55447dcd877ed8296917d76.zip"
+    },
+    "FunctionName": "notificationService",
+    "Handler": "notifications.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "NotificationsServiceServiceRole3DBE5E33",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.8"
+   },
+   "DependsOn": [
+    "NotificationsServiceServiceRoleDefaultPolicy1FE8E538",
+    "NotificationsServiceServiceRole3DBE5E33"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/NotificationsService/Resource",
+    "aws:asset:path": "asset.7aba441121050fa408e6173171e4fe59adfc0912c55447dcd877ed8296917d76",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "NotificationsServiceAllowInvokerF56F1095": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "NotificationsService2902FDF1",
+      "Arn"
+     ]
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "NotificationsServiceServiceRole3DBE5E33",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/NotificationsService/AllowInvoker"
+   }
+  },
+  "NotificationsServiceAllowOrderServiceInvokeDA05F0D6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "NotificationsService2902FDF1",
+      "Arn"
+     ]
+    },
+    "Principal": {
+     "Fn::GetAtt": [
+      "OrdersServiceServiceRoleD45DC90F",
+      "Arn"
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/NotificationsService/AllowOrderServiceInvoke"
+   }
+  },
+  "OrdersServiceServiceRoleD45DC90F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/OrdersService/ServiceRole/Resource"
+   }
+  },
+  "OrdersServiceServiceRoleDefaultPolicyC499D468": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "OrdersTable315BB997",
+          "Arn"
+         ]
+        },
+        {
+         "Ref": "AWS::NoValue"
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "OrdersServiceServiceRoleDefaultPolicyC499D468",
+    "Roles": [
+     {
+      "Ref": "OrdersServiceServiceRoleD45DC90F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/OrdersService/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "OrdersService13562E26": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-724126532640-us-east-1",
+     "S3Key": "88300a44800cb63fde7f3dd313fb16a184e03c3074b095623228cf3f98ad2f0b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TARGET_LAMBDA_ARN": {
+       "Fn::GetAtt": [
+        "NotificationsService2902FDF1",
+        "Arn"
+       ]
+      }
+     }
+    },
+    "FunctionName": "orderService",
+    "Handler": "orders.handler",
+    "Role": {
+     "Fn::GetAtt": [
+      "OrdersServiceServiceRoleD45DC90F",
+      "Arn"
+     ]
+    },
+    "Runtime": "python3.8"
+   },
+   "DependsOn": [
+    "OrdersServiceServiceRoleDefaultPolicyC499D468",
+    "OrdersServiceServiceRoleD45DC90F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/OrdersService/Resource",
+    "aws:asset:path": "asset.88300a44800cb63fde7f3dd313fb16a184e03c3074b095623228cf3f98ad2f0b",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "MicroservicesApiFE627B22": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "Gateway for Microservices.",
+    "Name": "Microservices Service"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Resource"
+   }
+  },
+  "MicroservicesApiDeployment57F63DCA0e21fb67874eba8ec74649cad46b6c63": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Gateway for Microservices.",
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "DependsOn": [
+    "MicroservicesApinotificationsGET3F05C4F1",
+    "MicroservicesApinotificationsPOST6C3803DA",
+    "MicroservicesApinotificationsB1E328CF",
+    "MicroservicesApiordersGETEBC6F451",
+    "MicroservicesApiordersPOST3347A41E",
+    "MicroservicesApiorders32EBBB69",
+    "MicroservicesApiusersGET27DB1AE6",
+    "MicroservicesApiusersPOSTC479D7F8",
+    "MicroservicesApiusers5A69665A"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Deployment/Resource"
+   }
+  },
+  "MicroservicesApiDeploymentStageprod4C2D8015": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "MicroservicesApiDeployment57F63DCA0e21fb67874eba8ec74649cad46b6c63"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/DeploymentStage.prod/Resource"
+   }
+  },
+  "MicroservicesApiusers5A69665A": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "MicroservicesApiFE627B22",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "users",
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/Resource"
+   }
+  },
+  "MicroservicesApiusersGETApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBGETusersF8D34F42": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UsersService20E012C1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/",
+       {
+        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+       },
+       "/GET/users"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users"
+   }
+  },
+  "MicroservicesApiusersGETApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBGETusersBC589554": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UsersService20E012C1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/test-invoke-stage/GET/users"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users"
+   }
+  },
+  "MicroservicesApiusersGET27DB1AE6": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "UsersService20E012C1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MicroservicesApiusers5A69665A"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/GET/Resource"
+   }
+  },
+  "MicroservicesApiusersPOSTApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBPOSTusers63B87C6A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UsersService20E012C1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/",
+       {
+        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+       },
+       "/POST/users"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users"
+   }
+  },
+  "MicroservicesApiusersPOSTApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBPOSTusers282276C4": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UsersService20E012C1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/test-invoke-stage/POST/users"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users"
+   }
+  },
+  "MicroservicesApiusersPOSTC479D7F8": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "UsersService20E012C1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MicroservicesApiusers5A69665A"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/users/POST/Resource"
+   }
+  },
+  "MicroservicesApiorders32EBBB69": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "MicroservicesApiFE627B22",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "orders",
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/Resource"
+   }
+  },
+  "MicroservicesApiordersGETApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBGETordersC78976C7": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "OrdersService13562E26",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/",
+       {
+        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+       },
+       "/GET/orders"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders"
+   }
+  },
+  "MicroservicesApiordersGETApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBGETordersCE2531EC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "OrdersService13562E26",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/test-invoke-stage/GET/orders"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders"
+   }
+  },
+  "MicroservicesApiordersGETEBC6F451": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "OrdersService13562E26",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MicroservicesApiorders32EBBB69"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET/Resource"
+   }
+  },
+  "MicroservicesApiordersPOSTApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBPOSTorders5232A362": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "OrdersService13562E26",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/",
+       {
+        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+       },
+       "/POST/orders"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders"
+   }
+  },
+  "MicroservicesApiordersPOSTApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBPOSTorders7C265D4A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "OrdersService13562E26",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/test-invoke-stage/POST/orders"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders"
+   }
+  },
+  "MicroservicesApiordersPOST3347A41E": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "OrdersService13562E26",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MicroservicesApiorders32EBBB69"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST/Resource"
+   }
+  },
+  "MicroservicesApinotificationsB1E328CF": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "MicroservicesApiFE627B22",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "notifications",
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/Resource"
+   }
+  },
+  "MicroservicesApinotificationsGETApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBGETnotificationsF8422BD0": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "NotificationsService2902FDF1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/",
+       {
+        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+       },
+       "/GET/notifications"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications"
+   }
+  },
+  "MicroservicesApinotificationsGETApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBGETnotifications3B8CB760": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "NotificationsService2902FDF1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/test-invoke-stage/GET/notifications"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications"
+   }
+  },
+  "MicroservicesApinotificationsGET3F05C4F1": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "NotificationsService2902FDF1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MicroservicesApinotificationsB1E328CF"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET/Resource"
+   }
+  },
+  "MicroservicesApinotificationsPOSTApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBPOSTnotificationsCC0568C8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "NotificationsService2902FDF1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/",
+       {
+        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+       },
+       "/POST/notifications"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications"
+   }
+  },
+  "MicroservicesApinotificationsPOSTApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBPOSTnotifications12D94619": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "NotificationsService2902FDF1",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-1:724126532640:",
+       {
+        "Ref": "MicroservicesApiFE627B22"
+       },
+       "/test-invoke-stage/POST/notifications"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications"
+   }
+  },
+  "MicroservicesApinotificationsPOST6C3803DA": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "NotificationsService2902FDF1",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MicroservicesApinotificationsB1E328CF"
+    },
+    "RestApiId": {
+     "Ref": "MicroservicesApiFE627B22"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST/Resource"
+   }
+  },
+  "myMicroServicesArtifactsBucketEncryptionKeyB7409C51": {
+   "Type": "AWS::KMS::Key",
+   "Properties": {
+    "KeyPolicy": {
+     "Statement": [
+      {
+       "Action": "kms:*",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::724126532640:root"
+       },
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKey/Resource"
+   }
+  },
+  "myMicroServicesArtifactsBucketEncryptionKeyAliasBADCA64B": {
+   "Type": "AWS::KMS::Alias",
+   "Properties": {
+    "AliasName": "alias/codepipeline-interviewprojectstack-mymicroservices-8c0f8eba",
+    "TargetKeyId": {
+     "Fn::GetAtt": [
+      "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+      "Arn"
+     ]
+    }
+   },
+   "UpdateReplacePolicy": "Delete",
+   "DeletionPolicy": "Delete",
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKeyAlias/Resource"
+   }
+  },
+  "myMicroServicesArtifactsBucket6D949F8E": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "KMSMasterKeyID": {
+         "Fn::GetAtt": [
+          "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+          "Arn"
+         ]
+        },
+        "SSEAlgorithm": "aws:kms"
+       }
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": true,
+     "BlockPublicPolicy": true,
+     "IgnorePublicAcls": true,
+     "RestrictPublicBuckets": true
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/ArtifactsBucket/Resource"
+   }
+  },
+  "myMicroServicesArtifactsBucketPolicyAA17467D": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "myMicroServicesArtifactsBucket6D949F8E"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:*",
+       "Condition": {
+        "Bool": {
+         "aws:SecureTransport": "false"
+        }
+       },
+       "Effect": "Deny",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "myMicroServicesArtifactsBucket6D949F8E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "myMicroServicesArtifactsBucket6D949F8E",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/ArtifactsBucket/Policy/Resource"
+   }
+  },
+  "myMicroServicesRole13DEF61C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codepipeline.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/Role/Resource"
+   }
+  },
+  "myMicroServicesRoleDefaultPolicy2650D561": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "s3:Abort*",
+        "s3:DeleteObject*",
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*",
+        "s3:PutObject",
+        "s3:PutObjectLegalHold",
+        "s3:PutObjectRetention",
+        "s3:PutObjectTagging",
+        "s3:PutObjectVersionTagging"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "myMicroServicesArtifactsBucket6D949F8E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "myMicroServicesArtifactsBucket6D949F8E",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+         "Arn"
+        ]
+       }
+      },
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "myMicroServicesRoleDefaultPolicy2650D561",
+    "Roles": [
+     {
+      "Ref": "myMicroServicesRole13DEF61C"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/Role/DefaultPolicy/Resource"
+   }
+  },
+  "myMicroServices7DA25A39": {
+   "Type": "AWS::CodePipeline::Pipeline",
+   "Properties": {
+    "ArtifactStore": {
+     "EncryptionKey": {
+      "Id": {
+       "Fn::GetAtt": [
+        "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+        "Arn"
+       ]
+      },
+      "Type": "KMS"
+     },
+     "Location": {
+      "Ref": "myMicroServicesArtifactsBucket6D949F8E"
+     },
+     "Type": "S3"
+    },
+    "Name": "myMicroServices",
+    "RoleArn": {
+     "Fn::GetAtt": [
+      "myMicroServicesRole13DEF61C",
+      "Arn"
+     ]
+    },
+    "Stages": [
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Source",
+         "Owner": "ThirdParty",
+         "Provider": "GitHub",
+         "Version": "1"
+        },
+        "Configuration": {
+         "Owner": "bharat-sunny",
+         "Repo": "microservice",
+         "Branch": "main",
+         "OAuthToken": "{{resolve:secretsmanager:AWS:SecretString:::}}",
+         "PollForSourceChanges": false
+        },
+        "Name": "GitHub_Source",
+        "OutputArtifacts": [
+         {
+          "Name": "Artifact_Dev_GitHub_Source"
+         }
+        ],
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Dev"
+     },
+     {
+      "Actions": [
+       {
+        "ActionTypeId": {
+         "Category": "Build",
+         "Owner": "AWS",
+         "Provider": "CodeBuild",
+         "Version": "1"
+        },
+        "Configuration": {
+         "ProjectName": {
+          "Ref": "TestBuildProject200EB7F7"
+         }
+        },
+        "InputArtifacts": [
+         {
+          "Name": "Artifact_Dev_GitHub_Source"
+         }
+        ],
+        "Name": "Test_Build",
+        "RoleArn": {
+         "Fn::GetAtt": [
+          "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2",
+          "Arn"
+         ]
+        },
+        "RunOrder": 1
+       }
+      ],
+      "Name": "Test"
+     }
+    ]
+   },
+   "DependsOn": [
+    "myMicroServicesRoleDefaultPolicy2650D561",
+    "myMicroServicesRole13DEF61C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/Resource"
+   }
+  },
+  "myMicroServicesDevGitHubSourceWebhookResource43F4D556": {
+   "Type": "AWS::CodePipeline::Webhook",
+   "Properties": {
+    "Authentication": "GITHUB_HMAC",
+    "AuthenticationConfiguration": {
+     "SecretToken": "{{resolve:secretsmanager:AWS:SecretString:::}}"
+    },
+    "Filters": [
+     {
+      "JsonPath": "$.ref",
+      "MatchEquals": "refs/heads/{Branch}"
+     }
+    ],
+    "RegisterWithThirdParty": true,
+    "TargetAction": "GitHub_Source",
+    "TargetPipeline": {
+     "Ref": "myMicroServices7DA25A39"
+    },
+    "TargetPipelineVersion": 1
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/Dev/GitHub_Source/WebhookResource"
+   }
+  },
+  "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "arn:aws:iam::724126532640:root"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/Resource"
+   }
+  },
+  "myMicroServicesTestTestBuildCodePipelineActionRoleDefaultPolicy84535366": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "codebuild:BatchGetBuilds",
+        "codebuild:StartBuild",
+        "codebuild:StopBuild"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "TestBuildProject200EB7F7",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "myMicroServicesTestTestBuildCodePipelineActionRoleDefaultPolicy84535366",
+    "Roles": [
+     {
+      "Ref": "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/DefaultPolicy/Resource"
+   }
+  },
+  "TestBuildProjectRole189F23AF": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "codebuild.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/TestBuildProject/Role/Resource"
+   }
+  },
+  "TestBuildProjectRoleDefaultPolicyF85B9AEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:us-east-1:724126532640:log-group:/aws/codebuild/",
+           {
+            "Ref": "TestBuildProject200EB7F7"
+           },
+           ":*"
+          ]
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           "arn:aws:logs:us-east-1:724126532640:log-group:/aws/codebuild/",
+           {
+            "Ref": "TestBuildProject200EB7F7"
+           }
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "codebuild:BatchPutCodeCoverages",
+        "codebuild:BatchPutTestCases",
+        "codebuild:CreateReport",
+        "codebuild:CreateReportGroup",
+        "codebuild:UpdateReport"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          "arn:aws:codebuild:us-east-1:724126532640:report-group/",
+          {
+           "Ref": "TestBuildProject200EB7F7"
+          },
+          "-*"
+         ]
+        ]
+       }
+      },
+      {
+       "Action": [
+        "s3:GetBucket*",
+        "s3:GetObject*",
+        "s3:List*"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "myMicroServicesArtifactsBucket6D949F8E",
+          "Arn"
+         ]
+        },
+        {
+         "Fn::Join": [
+          "",
+          [
+           {
+            "Fn::GetAtt": [
+             "myMicroServicesArtifactsBucket6D949F8E",
+             "Arn"
+            ]
+           },
+           "/*"
+          ]
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "kms:Decrypt",
+        "kms:DescribeKey",
+        "kms:Encrypt",
+        "kms:GenerateDataKey*",
+        "kms:ReEncrypt*"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::GetAtt": [
+         "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+         "Arn"
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "TestBuildProjectRoleDefaultPolicyF85B9AEB",
+    "Roles": [
+     {
+      "Ref": "TestBuildProjectRole189F23AF"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/TestBuildProject/Role/DefaultPolicy/Resource"
+   }
+  },
+  "TestBuildProject200EB7F7": {
+   "Type": "AWS::CodeBuild::Project",
+   "Properties": {
+    "Artifacts": {
+     "Type": "CODEPIPELINE"
+    },
+    "Cache": {
+     "Type": "NO_CACHE"
+    },
+    "EncryptionKey": {
+     "Fn::GetAtt": [
+      "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+      "Arn"
+     ]
+    },
+    "Environment": {
+     "ComputeType": "BUILD_GENERAL1_SMALL",
+     "Image": "aws/codebuild/standard:4.0",
+     "ImagePullCredentialsType": "CODEBUILD",
+     "PrivilegedMode": false,
+     "Type": "LINUX_CONTAINER"
+    },
+    "ServiceRole": {
+     "Fn::GetAtt": [
+      "TestBuildProjectRole189F23AF",
+      "Arn"
+     ]
+    },
+    "Source": {
+     "BuildSpec": "buildspec-test.yml",
+     "Type": "CODEPIPELINE"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/TestBuildProject/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QW0sDMRCFf4vvadQWBR9bxRcRl1rwsWSTsZ1ubmwSyhLy381lpfs030kmZ05mTV+e6fqOXd2Ki2Elsafx2zM+kHx0jE47Gg/GIievv7pCImLSTBmROw+sl1BvCiQimeoFo/E9aO7R6HK15A5Ghc5llQgyRePetPe1dkYin2pfpUTc5sicA+/otpSsadwFPoDfMQekYXkwUys3n6VOhFk8MQ9XNuXB4PzWYp094xtYaSYFujouVN7HqaZskPtNGDnUCP9iNmr8Cf5sRDlqlAg3AixakKiBxm6m+tUF/0B/NmZIZFB57R9Q/1DKViJzRVRodn1AKW5e3WguwGv0GVO6pavrK/FRn0rLV/A2+GXoRLopZ9X3G/r4QJ/uLg5xNQbtUQHdt/oHj7WMpi0CAAA="
+   },
+   "Metadata": {
+    "aws:cdk:path": "InterviewProjectStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "MicroservicesApiEndpointF3CA5E7A": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "MicroservicesApiFE627B22"
+      },
+      ".execute-api.us-east-1.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

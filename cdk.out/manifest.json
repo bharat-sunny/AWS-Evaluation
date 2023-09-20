@@ -1,0 +1,392 @@
+{
+  "version": "34.0.0",
+  "artifacts": {
+    "InterviewProjectStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "InterviewProjectStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "InterviewProjectStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://724126532640/us-east-1",
+      "properties": {
+        "templateFile": "InterviewProjectStack.template.json",
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::724126532640:role/cdk-hnb659fds-deploy-role-724126532640-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::724126532640:role/cdk-hnb659fds-cfn-exec-role-724126532640-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-724126532640-us-east-1/a3df8e47c051d9b5bcadca75d79168c88e3133c0e7c35e86be8bd8389e26165c.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "InterviewProjectStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::724126532640:role/cdk-hnb659fds-lookup-role-724126532640-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "InterviewProjectStack.assets"
+      ],
+      "metadata": {
+        "/InterviewProjectStack/MyTopic/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyTopic86869434"
+          }
+        ],
+        "/InterviewProjectStack/UsersTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "UsersTable9725E9C8"
+            }
+          }
+        ],
+        "/InterviewProjectStack/UsersTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UsersTable9725E9C8"
+          }
+        ],
+        "/InterviewProjectStack/OrdersTable": [
+          {
+            "type": "aws:cdk:hasPhysicalName",
+            "data": {
+              "Ref": "OrdersTable315BB997"
+            }
+          }
+        ],
+        "/InterviewProjectStack/OrdersTable/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OrdersTable315BB997"
+          }
+        ],
+        "/InterviewProjectStack/UsersService/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UsersServiceServiceRole81B17718"
+          }
+        ],
+        "/InterviewProjectStack/UsersService/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UsersServiceServiceRoleDefaultPolicy21D26479"
+          }
+        ],
+        "/InterviewProjectStack/UsersService/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UsersService20E012C1"
+          }
+        ],
+        "/InterviewProjectStack/NotificationsService/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NotificationsServiceServiceRole3DBE5E33"
+          }
+        ],
+        "/InterviewProjectStack/NotificationsService/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NotificationsServiceServiceRoleDefaultPolicy1FE8E538"
+          }
+        ],
+        "/InterviewProjectStack/NotificationsService/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NotificationsService2902FDF1"
+          }
+        ],
+        "/InterviewProjectStack/NotificationsService/AllowInvoker": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NotificationsServiceAllowInvokerF56F1095"
+          }
+        ],
+        "/InterviewProjectStack/NotificationsService/AllowOrderServiceInvoke": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "NotificationsServiceAllowOrderServiceInvokeDA05F0D6"
+          }
+        ],
+        "/InterviewProjectStack/OrdersService/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OrdersServiceServiceRoleD45DC90F"
+          }
+        ],
+        "/InterviewProjectStack/OrdersService/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OrdersServiceServiceRoleDefaultPolicyC499D468"
+          }
+        ],
+        "/InterviewProjectStack/OrdersService/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "OrdersService13562E26"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiFE627B22"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiDeployment57F63DCA0e21fb67874eba8ec74649cad46b6c63"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiDeploymentStageprod4C2D8015"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiEndpointF3CA5E7A"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusers5A69665A"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusersGETApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBGETusersF8D34F42"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusersGETApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBGETusersBC589554"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusersGET27DB1AE6"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusersPOSTApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBPOSTusers63B87C6A"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusersPOSTApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBPOSTusers282276C4"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/users/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiusersPOSTC479D7F8"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiorders32EBBB69"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiordersGETApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBGETordersC78976C7"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiordersGETApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBGETordersCE2531EC"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiordersGETEBC6F451"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiordersPOSTApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBPOSTorders5232A362"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiordersPOSTApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBPOSTorders7C265D4A"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/orders/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApiordersPOST3347A41E"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsB1E328CF"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsGETApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBGETnotificationsF8422BD0"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsGETApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBGETnotifications3B8CB760"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/GET/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsGET3F05C4F1"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsPOSTApiPermissionInterviewProjectStackMicroservicesApiBABCDEDBPOSTnotificationsCC0568C8"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsPOSTApiPermissionTestInterviewProjectStackMicroservicesApiBABCDEDBPOSTnotifications12D94619"
+          }
+        ],
+        "/InterviewProjectStack/MicroservicesApi/Default/notifications/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MicroservicesApinotificationsPOST6C3803DA"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKey/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesArtifactsBucketEncryptionKeyB7409C51"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKeyAlias/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesArtifactsBucketEncryptionKeyAliasBADCA64B"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/ArtifactsBucket/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesArtifactsBucket6D949F8E"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/ArtifactsBucket/Policy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesArtifactsBucketPolicyAA17467D"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesRole13DEF61C"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesRoleDefaultPolicy2650D561"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServices7DA25A39"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/Dev/GitHub_Source/WebhookResource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesDevGitHubSourceWebhookResource43F4D556"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2"
+          }
+        ],
+        "/InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "myMicroServicesTestTestBuildCodePipelineActionRoleDefaultPolicy84535366"
+          }
+        ],
+        "/InterviewProjectStack/TestBuildProject/Role/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestBuildProjectRole189F23AF"
+          }
+        ],
+        "/InterviewProjectStack/TestBuildProject/Role/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestBuildProjectRoleDefaultPolicyF85B9AEB"
+          }
+        ],
+        "/InterviewProjectStack/TestBuildProject/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "TestBuildProject200EB7F7"
+          }
+        ],
+        "/InterviewProjectStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/InterviewProjectStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/InterviewProjectStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "InterviewProjectStack"
+    },
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    }
+  }
+}

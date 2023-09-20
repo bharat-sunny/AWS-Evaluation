@@ -1,0 +1,2505 @@
+{
+  "version": "tree-0.1",
+  "tree": {
+    "id": "App",
+    "path": "",
+    "children": {
+      "InterviewProjectStack": {
+        "id": "InterviewProjectStack",
+        "path": "InterviewProjectStack",
+        "children": {
+          "MyTopic": {
+            "id": "MyTopic",
+            "path": "InterviewProjectStack/MyTopic",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/MyTopic/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::SNS::Topic",
+                  "aws:cdk:cloudformation:props": {
+                    "displayName": "My SNS Topic",
+                    "topicName": "MyTopicName"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_sns.CfnTopic",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_sns.Topic",
+              "version": "2.96.2"
+            }
+          },
+          "UsersTable": {
+            "id": "UsersTable",
+            "path": "InterviewProjectStack/UsersTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/UsersTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "user_id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "keySchema": [
+                      {
+                        "attributeName": "user_id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    },
+                    "tableName": "UsersTable"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.96.2"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "InterviewProjectStack/UsersTable/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.96.2"
+            }
+          },
+          "OrdersTable": {
+            "id": "OrdersTable",
+            "path": "InterviewProjectStack/OrdersTable",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/OrdersTable/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::DynamoDB::Table",
+                  "aws:cdk:cloudformation:props": {
+                    "attributeDefinitions": [
+                      {
+                        "attributeName": "order_id",
+                        "attributeType": "S"
+                      }
+                    ],
+                    "keySchema": [
+                      {
+                        "attributeName": "order_id",
+                        "keyType": "HASH"
+                      }
+                    ],
+                    "provisionedThroughput": {
+                      "readCapacityUnits": 5,
+                      "writeCapacityUnits": 5
+                    },
+                    "tableName": "OrdersTable"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_dynamodb.CfnTable",
+                  "version": "2.96.2"
+                }
+              },
+              "ScalingRole": {
+                "id": "ScalingRole",
+                "path": "InterviewProjectStack/OrdersTable/ScalingRole",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_dynamodb.Table",
+              "version": "2.96.2"
+            }
+          },
+          "UsersService": {
+            "id": "UsersService",
+            "path": "InterviewProjectStack/UsersService",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "InterviewProjectStack/UsersService/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "InterviewProjectStack/UsersService/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/UsersService/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InterviewProjectStack/UsersService/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/UsersService/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "ses:VerifyEmailIdentity",
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                },
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "UsersTable9725E9C8",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "UsersServiceServiceRoleDefaultPolicy21D26479",
+                            "roles": [
+                              {
+                                "Ref": "UsersServiceServiceRole81B17718"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.96.2"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "InterviewProjectStack/UsersService/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "InterviewProjectStack/UsersService/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "InterviewProjectStack/UsersService/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.96.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/UsersService/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-724126532640-us-east-1",
+                      "s3Key": "ac38b0d5a51a538151252e88028b3cc432b939c29e9c886c428d0675a2a0afc7.zip"
+                    },
+                    "functionName": "userService",
+                    "handler": "users.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "UsersServiceServiceRole81B17718",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.8"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.96.2"
+            }
+          },
+          "NotificationsService": {
+            "id": "NotificationsService",
+            "path": "InterviewProjectStack/NotificationsService",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "InterviewProjectStack/NotificationsService/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "InterviewProjectStack/NotificationsService/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/NotificationsService/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InterviewProjectStack/NotificationsService/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/NotificationsService/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "ses:SendEmail",
+                                    "ses:SendRawEmail"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": "*"
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "NotificationsServiceServiceRoleDefaultPolicy1FE8E538",
+                            "roles": [
+                              {
+                                "Ref": "NotificationsServiceServiceRole3DBE5E33"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.96.2"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "InterviewProjectStack/NotificationsService/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "InterviewProjectStack/NotificationsService/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "InterviewProjectStack/NotificationsService/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.96.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/NotificationsService/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-724126532640-us-east-1",
+                      "s3Key": "7aba441121050fa408e6173171e4fe59adfc0912c55447dcd877ed8296917d76.zip"
+                    },
+                    "functionName": "notificationService",
+                    "handler": "notifications.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "NotificationsServiceServiceRole3DBE5E33",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.8"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.96.2"
+                }
+              },
+              "AllowInvoker": {
+                "id": "AllowInvoker",
+                "path": "InterviewProjectStack/NotificationsService/AllowInvoker",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "NotificationsService2902FDF1",
+                        "Arn"
+                      ]
+                    },
+                    "principal": {
+                      "Fn::GetAtt": [
+                        "NotificationsServiceServiceRole3DBE5E33",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                  "version": "2.96.2"
+                }
+              },
+              "AllowOrderServiceInvoke": {
+                "id": "AllowOrderServiceInvoke",
+                "path": "InterviewProjectStack/NotificationsService/AllowOrderServiceInvoke",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "NotificationsService2902FDF1",
+                        "Arn"
+                      ]
+                    },
+                    "principal": {
+                      "Fn::GetAtt": [
+                        "OrdersServiceServiceRoleD45DC90F",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.96.2"
+            }
+          },
+          "OrdersService": {
+            "id": "OrdersService",
+            "path": "InterviewProjectStack/OrdersService",
+            "children": {
+              "ServiceRole": {
+                "id": "ServiceRole",
+                "path": "InterviewProjectStack/OrdersService/ServiceRole",
+                "children": {
+                  "ImportServiceRole": {
+                    "id": "ImportServiceRole",
+                    "path": "InterviewProjectStack/OrdersService/ServiceRole/ImportServiceRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/OrdersService/ServiceRole/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "lambda.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InterviewProjectStack/OrdersService/ServiceRole/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/OrdersService/ServiceRole/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "dynamodb:BatchGetItem",
+                                    "dynamodb:BatchWriteItem",
+                                    "dynamodb:ConditionCheckItem",
+                                    "dynamodb:DeleteItem",
+                                    "dynamodb:DescribeTable",
+                                    "dynamodb:GetItem",
+                                    "dynamodb:GetRecords",
+                                    "dynamodb:GetShardIterator",
+                                    "dynamodb:PutItem",
+                                    "dynamodb:Query",
+                                    "dynamodb:Scan",
+                                    "dynamodb:UpdateItem"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "OrdersTable315BB997",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Ref": "AWS::NoValue"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "OrdersServiceServiceRoleDefaultPolicyC499D468",
+                            "roles": [
+                              {
+                                "Ref": "OrdersServiceServiceRoleD45DC90F"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.96.2"
+                }
+              },
+              "Code": {
+                "id": "Code",
+                "path": "InterviewProjectStack/OrdersService/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "InterviewProjectStack/OrdersService/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "InterviewProjectStack/OrdersService/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.96.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/OrdersService/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": "cdk-hnb659fds-assets-724126532640-us-east-1",
+                      "s3Key": "88300a44800cb63fde7f3dd313fb16a184e03c3074b095623228cf3f98ad2f0b.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "TARGET_LAMBDA_ARN": {
+                          "Fn::GetAtt": [
+                            "NotificationsService2902FDF1",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "functionName": "orderService",
+                    "handler": "orders.handler",
+                    "role": {
+                      "Fn::GetAtt": [
+                        "OrdersServiceServiceRoleD45DC90F",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "python3.8"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.96.2"
+            }
+          },
+          "MicroservicesApi": {
+            "id": "MicroservicesApi",
+            "path": "InterviewProjectStack/MicroservicesApi",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/MicroservicesApi/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::RestApi",
+                  "aws:cdk:cloudformation:props": {
+                    "description": "Gateway for Microservices.",
+                    "name": "Microservices Service"
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.CfnRestApi",
+                  "version": "2.96.2"
+                }
+              },
+              "Deployment": {
+                "id": "Deployment",
+                "path": "InterviewProjectStack/MicroservicesApi/Deployment",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/MicroservicesApi/Deployment/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Deployment",
+                      "aws:cdk:cloudformation:props": {
+                        "description": "Gateway for Microservices.",
+                        "restApiId": {
+                          "Ref": "MicroservicesApiFE627B22"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnDeployment",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Deployment",
+                  "version": "2.96.2"
+                }
+              },
+              "DeploymentStage.prod": {
+                "id": "DeploymentStage.prod",
+                "path": "InterviewProjectStack/MicroservicesApi/DeploymentStage.prod",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/MicroservicesApi/DeploymentStage.prod/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
+                      "aws:cdk:cloudformation:props": {
+                        "deploymentId": {
+                          "Ref": "MicroservicesApiDeployment57F63DCA0e21fb67874eba8ec74649cad46b6c63"
+                        },
+                        "restApiId": {
+                          "Ref": "MicroservicesApiFE627B22"
+                        },
+                        "stageName": "prod"
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.CfnStage",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.Stage",
+                  "version": "2.96.2"
+                }
+              },
+              "Endpoint": {
+                "id": "Endpoint",
+                "path": "InterviewProjectStack/MicroservicesApi/Endpoint",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnOutput",
+                  "version": "2.96.2"
+                }
+              },
+              "Default": {
+                "id": "Default",
+                "path": "InterviewProjectStack/MicroservicesApi/Default",
+                "children": {
+                  "users": {
+                    "id": "users",
+                    "path": "InterviewProjectStack/MicroservicesApi/Default/users",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/users/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MicroservicesApiFE627B22",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "users",
+                            "restApiId": {
+                              "Ref": "MicroservicesApiFE627B22"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.96.2"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/users/GET",
+                        "children": {
+                          "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users": {
+                            "id": "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/users/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "UsersService20E012C1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+                                      },
+                                      "/GET/users"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users": {
+                            "id": "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/users/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..users",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "UsersService20E012C1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/test-invoke-stage/GET/users"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/users/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "GET",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "UsersService20E012C1",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "MicroservicesApiusers5A69665A"
+                                },
+                                "restApiId": {
+                                  "Ref": "MicroservicesApiFE627B22"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.96.2"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/users/POST",
+                        "children": {
+                          "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users": {
+                            "id": "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/users/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "UsersService20E012C1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+                                      },
+                                      "/POST/users"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users": {
+                            "id": "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/users/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..users",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "UsersService20E012C1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/test-invoke-stage/POST/users"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/users/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "UsersService20E012C1",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "MicroservicesApiusers5A69665A"
+                                },
+                                "restApiId": {
+                                  "Ref": "MicroservicesApiFE627B22"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "orders": {
+                    "id": "orders",
+                    "path": "InterviewProjectStack/MicroservicesApi/Default/orders",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/orders/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MicroservicesApiFE627B22",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "orders",
+                            "restApiId": {
+                              "Ref": "MicroservicesApiFE627B22"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.96.2"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET",
+                        "children": {
+                          "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders": {
+                            "id": "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "OrdersService13562E26",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+                                      },
+                                      "/GET/orders"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders": {
+                            "id": "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..orders",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "OrdersService13562E26",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/test-invoke-stage/GET/orders"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/orders/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "GET",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "OrdersService13562E26",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "MicroservicesApiorders32EBBB69"
+                                },
+                                "restApiId": {
+                                  "Ref": "MicroservicesApiFE627B22"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.96.2"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST",
+                        "children": {
+                          "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders": {
+                            "id": "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "OrdersService13562E26",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+                                      },
+                                      "/POST/orders"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders": {
+                            "id": "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..orders",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "OrdersService13562E26",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/test-invoke-stage/POST/orders"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/orders/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "OrdersService13562E26",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "MicroservicesApiorders32EBBB69"
+                                },
+                                "restApiId": {
+                                  "Ref": "MicroservicesApiFE627B22"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "notifications": {
+                    "id": "notifications",
+                    "path": "InterviewProjectStack/MicroservicesApi/Default/notifications",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MicroservicesApiFE627B22",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "notifications",
+                            "restApiId": {
+                              "Ref": "MicroservicesApiFE627B22"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.96.2"
+                        }
+                      },
+                      "GET": {
+                        "id": "GET",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET",
+                        "children": {
+                          "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications": {
+                            "id": "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "NotificationsService2902FDF1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+                                      },
+                                      "/GET/notifications"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications": {
+                            "id": "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.GET..notifications",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "NotificationsService2902FDF1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/test-invoke-stage/GET/notifications"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/GET/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "GET",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "NotificationsService2902FDF1",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "MicroservicesApinotificationsB1E328CF"
+                                },
+                                "restApiId": {
+                                  "Ref": "MicroservicesApiFE627B22"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.96.2"
+                        }
+                      },
+                      "POST": {
+                        "id": "POST",
+                        "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST",
+                        "children": {
+                          "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications": {
+                            "id": "ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST/ApiPermission.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "NotificationsService2902FDF1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/",
+                                      {
+                                        "Ref": "MicroservicesApiDeploymentStageprod4C2D8015"
+                                      },
+                                      "/POST/notifications"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications": {
+                            "id": "ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST/ApiPermission.Test.InterviewProjectStackMicroservicesApiBABCDEDB.POST..notifications",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                              "aws:cdk:cloudformation:props": {
+                                "action": "lambda:InvokeFunction",
+                                "functionName": {
+                                  "Fn::GetAtt": [
+                                    "NotificationsService2902FDF1",
+                                    "Arn"
+                                  ]
+                                },
+                                "principal": "apigateway.amazonaws.com",
+                                "sourceArn": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "arn:aws:execute-api:us-east-1:724126532640:",
+                                      {
+                                        "Ref": "MicroservicesApiFE627B22"
+                                      },
+                                      "/test-invoke-stage/POST/notifications"
+                                    ]
+                                  ]
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/MicroservicesApi/Default/notifications/POST/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                              "aws:cdk:cloudformation:props": {
+                                "authorizationType": "NONE",
+                                "httpMethod": "POST",
+                                "integration": {
+                                  "type": "AWS_PROXY",
+                                  "uri": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:apigateway:us-east-1:lambda:path/2015-03-31/functions/",
+                                        {
+                                          "Fn::GetAtt": [
+                                            "NotificationsService2902FDF1",
+                                            "Arn"
+                                          ]
+                                        },
+                                        "/invocations"
+                                      ]
+                                    ]
+                                  },
+                                  "integrationHttpMethod": "POST"
+                                },
+                                "resourceId": {
+                                  "Ref": "MicroservicesApinotificationsB1E328CF"
+                                },
+                                "restApiId": {
+                                  "Ref": "MicroservicesApiFE627B22"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_apigateway.ResourceBase",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_apigateway.RestApi",
+              "version": "2.96.2"
+            }
+          },
+          "myMicroServices": {
+            "id": "myMicroServices",
+            "path": "InterviewProjectStack/myMicroServices",
+            "children": {
+              "ArtifactsBucketEncryptionKey": {
+                "id": "ArtifactsBucketEncryptionKey",
+                "path": "InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKey",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKey/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Key",
+                      "aws:cdk:cloudformation:props": {
+                        "keyPolicy": {
+                          "Statement": [
+                            {
+                              "Action": "kms:*",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "AWS": "arn:aws:iam::724126532640:root"
+                              },
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnKey",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Key",
+                  "version": "2.96.2"
+                }
+              },
+              "ArtifactsBucketEncryptionKeyAlias": {
+                "id": "ArtifactsBucketEncryptionKeyAlias",
+                "path": "InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKeyAlias",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/myMicroServices/ArtifactsBucketEncryptionKeyAlias/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::KMS::Alias",
+                      "aws:cdk:cloudformation:props": {
+                        "aliasName": "alias/codepipeline-interviewprojectstack-mymicroservices-8c0f8eba",
+                        "targetKeyId": {
+                          "Fn::GetAtt": [
+                            "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_kms.CfnAlias",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_kms.Alias",
+                  "version": "2.96.2"
+                }
+              },
+              "ArtifactsBucket": {
+                "id": "ArtifactsBucket",
+                "path": "InterviewProjectStack/myMicroServices/ArtifactsBucket",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/myMicroServices/ArtifactsBucket/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::S3::Bucket",
+                      "aws:cdk:cloudformation:props": {
+                        "bucketEncryption": {
+                          "serverSideEncryptionConfiguration": [
+                            {
+                              "serverSideEncryptionByDefault": {
+                                "sseAlgorithm": "aws:kms",
+                                "kmsMasterKeyId": {
+                                  "Fn::GetAtt": [
+                                    "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+                                    "Arn"
+                                  ]
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "publicAccessBlockConfiguration": {
+                          "blockPublicAcls": true,
+                          "blockPublicPolicy": true,
+                          "ignorePublicAcls": true,
+                          "restrictPublicBuckets": true
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.CfnBucket",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "Policy": {
+                    "id": "Policy",
+                    "path": "InterviewProjectStack/myMicroServices/ArtifactsBucket/Policy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/myMicroServices/ArtifactsBucket/Policy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::S3::BucketPolicy",
+                          "aws:cdk:cloudformation:props": {
+                            "bucket": {
+                              "Ref": "myMicroServicesArtifactsBucket6D949F8E"
+                            },
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": "s3:*",
+                                  "Condition": {
+                                    "Bool": {
+                                      "aws:SecureTransport": "false"
+                                    }
+                                  },
+                                  "Effect": "Deny",
+                                  "Principal": {
+                                    "AWS": "*"
+                                  },
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "myMicroServicesArtifactsBucket6D949F8E",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "myMicroServicesArtifactsBucket6D949F8E",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_s3.CfnBucketPolicy",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketPolicy",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3.Bucket",
+                  "version": "2.96.2"
+                }
+              },
+              "Role": {
+                "id": "Role",
+                "path": "InterviewProjectStack/myMicroServices/Role",
+                "children": {
+                  "ImportRole": {
+                    "id": "ImportRole",
+                    "path": "InterviewProjectStack/myMicroServices/Role/ImportRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/myMicroServices/Role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "codepipeline.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InterviewProjectStack/myMicroServices/Role/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/myMicroServices/Role/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "s3:Abort*",
+                                    "s3:DeleteObject*",
+                                    "s3:GetBucket*",
+                                    "s3:GetObject*",
+                                    "s3:List*",
+                                    "s3:PutObject",
+                                    "s3:PutObjectLegalHold",
+                                    "s3:PutObjectRetention",
+                                    "s3:PutObjectTagging",
+                                    "s3:PutObjectVersionTagging"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "myMicroServicesArtifactsBucket6D949F8E",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "myMicroServicesArtifactsBucket6D949F8E",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "kms:Decrypt",
+                                    "kms:DescribeKey",
+                                    "kms:Encrypt",
+                                    "kms:GenerateDataKey*",
+                                    "kms:ReEncrypt*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": "sts:AssumeRole",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "myMicroServicesRoleDefaultPolicy2650D561",
+                            "roles": [
+                              {
+                                "Ref": "myMicroServicesRole13DEF61C"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.96.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/myMicroServices/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CodePipeline::Pipeline",
+                  "aws:cdk:cloudformation:props": {
+                    "artifactStore": {
+                      "type": "S3",
+                      "location": {
+                        "Ref": "myMicroServicesArtifactsBucket6D949F8E"
+                      },
+                      "encryptionKey": {
+                        "type": "KMS",
+                        "id": {
+                          "Fn::GetAtt": [
+                            "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    },
+                    "name": "myMicroServices",
+                    "roleArn": {
+                      "Fn::GetAtt": [
+                        "myMicroServicesRole13DEF61C",
+                        "Arn"
+                      ]
+                    },
+                    "stages": [
+                      {
+                        "name": "Dev",
+                        "actions": [
+                          {
+                            "name": "GitHub_Source",
+                            "outputArtifacts": [
+                              {
+                                "name": "Artifact_Dev_GitHub_Source"
+                              }
+                            ],
+                            "actionTypeId": {
+                              "category": "Source",
+                              "version": "1",
+                              "owner": "ThirdParty",
+                              "provider": "GitHub"
+                            },
+                            "configuration": {
+                              "Owner": "bharat-sunny",
+                              "Repo": "microservice",
+                              "Branch": "main",
+                              "OAuthToken": "{{resolve:secretsmanager:AWS:SecretString:::}}",
+                              "PollForSourceChanges": false
+                            },
+                            "runOrder": 1
+                          }
+                        ]
+                      },
+                      {
+                        "name": "Test",
+                        "actions": [
+                          {
+                            "name": "Test_Build",
+                            "inputArtifacts": [
+                              {
+                                "name": "Artifact_Dev_GitHub_Source"
+                              }
+                            ],
+                            "actionTypeId": {
+                              "category": "Build",
+                              "version": "1",
+                              "owner": "AWS",
+                              "provider": "CodeBuild"
+                            },
+                            "configuration": {
+                              "ProjectName": {
+                                "Ref": "TestBuildProject200EB7F7"
+                              }
+                            },
+                            "runOrder": 1,
+                            "roleArn": {
+                              "Fn::GetAtt": [
+                                "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2",
+                                "Arn"
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codepipeline.CfnPipeline",
+                  "version": "2.96.2"
+                }
+              },
+              "Dev": {
+                "id": "Dev",
+                "path": "InterviewProjectStack/myMicroServices/Dev",
+                "children": {
+                  "GitHub_Source": {
+                    "id": "GitHub_Source",
+                    "path": "InterviewProjectStack/myMicroServices/Dev/GitHub_Source",
+                    "children": {
+                      "WebhookResource": {
+                        "id": "WebhookResource",
+                        "path": "InterviewProjectStack/myMicroServices/Dev/GitHub_Source/WebhookResource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::CodePipeline::Webhook",
+                          "aws:cdk:cloudformation:props": {
+                            "authentication": "GITHUB_HMAC",
+                            "authenticationConfiguration": {
+                              "secretToken": "{{resolve:secretsmanager:AWS:SecretString:::}}"
+                            },
+                            "filters": [
+                              {
+                                "jsonPath": "$.ref",
+                                "matchEquals": "refs/heads/{Branch}"
+                              }
+                            ],
+                            "registerWithThirdParty": true,
+                            "targetAction": "GitHub_Source",
+                            "targetPipeline": {
+                              "Ref": "myMicroServices7DA25A39"
+                            },
+                            "targetPipelineVersion": 1
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_codepipeline.CfnWebhook",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.2.70"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.70"
+                }
+              },
+              "Test": {
+                "id": "Test",
+                "path": "InterviewProjectStack/myMicroServices/Test",
+                "children": {
+                  "Test_Build": {
+                    "id": "Test_Build",
+                    "path": "InterviewProjectStack/myMicroServices/Test/Test_Build",
+                    "children": {
+                      "CodePipelineActionRole": {
+                        "id": "CodePipelineActionRole",
+                        "path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole",
+                        "children": {
+                          "ImportCodePipelineActionRole": {
+                            "id": "ImportCodePipelineActionRole",
+                            "path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/ImportCodePipelineActionRole",
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.Resource",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                              "aws:cdk:cloudformation:props": {
+                                "assumeRolePolicyDocument": {
+                                  "Statement": [
+                                    {
+                                      "Action": "sts:AssumeRole",
+                                      "Effect": "Allow",
+                                      "Principal": {
+                                        "AWS": "arn:aws:iam::724126532640:root"
+                                      }
+                                    }
+                                  ],
+                                  "Version": "2012-10-17"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                              "version": "2.96.2"
+                            }
+                          },
+                          "DefaultPolicy": {
+                            "id": "DefaultPolicy",
+                            "path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/DefaultPolicy",
+                            "children": {
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "InterviewProjectStack/myMicroServices/Test/Test_Build/CodePipelineActionRole/DefaultPolicy/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                                  "aws:cdk:cloudformation:props": {
+                                    "policyDocument": {
+                                      "Statement": [
+                                        {
+                                          "Action": [
+                                            "codebuild:BatchGetBuilds",
+                                            "codebuild:StartBuild",
+                                            "codebuild:StopBuild"
+                                          ],
+                                          "Effect": "Allow",
+                                          "Resource": {
+                                            "Fn::GetAtt": [
+                                              "TestBuildProject200EB7F7",
+                                              "Arn"
+                                            ]
+                                          }
+                                        }
+                                      ],
+                                      "Version": "2012-10-17"
+                                    },
+                                    "policyName": "myMicroServicesTestTestBuildCodePipelineActionRoleDefaultPolicy84535366",
+                                    "roles": [
+                                      {
+                                        "Ref": "myMicroServicesTestTestBuildCodePipelineActionRoleF3BF30F2"
+                                      }
+                                    ]
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                                  "version": "2.96.2"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_iam.Policy",
+                              "version": "2.96.2"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.Role",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "constructs.Construct",
+                      "version": "10.2.70"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "constructs.Construct",
+                  "version": "10.2.70"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_codepipeline.Pipeline",
+              "version": "2.96.2"
+            }
+          },
+          "TestBuildProject": {
+            "id": "TestBuildProject",
+            "path": "InterviewProjectStack/TestBuildProject",
+            "children": {
+              "Role": {
+                "id": "Role",
+                "path": "InterviewProjectStack/TestBuildProject/Role",
+                "children": {
+                  "ImportRole": {
+                    "id": "ImportRole",
+                    "path": "InterviewProjectStack/TestBuildProject/Role/ImportRole",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.Resource",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "InterviewProjectStack/TestBuildProject/Role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": "codebuild.amazonaws.com"
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.CfnRole",
+                      "version": "2.96.2"
+                    }
+                  },
+                  "DefaultPolicy": {
+                    "id": "DefaultPolicy",
+                    "path": "InterviewProjectStack/TestBuildProject/Role/DefaultPolicy",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "InterviewProjectStack/TestBuildProject/Role/DefaultPolicy/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                          "aws:cdk:cloudformation:props": {
+                            "policyDocument": {
+                              "Statement": [
+                                {
+                                  "Action": [
+                                    "logs:CreateLogGroup",
+                                    "logs:CreateLogStream",
+                                    "logs:PutLogEvents"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:logs:us-east-1:724126532640:log-group:/aws/codebuild/",
+                                          {
+                                            "Ref": "TestBuildProject200EB7F7"
+                                          },
+                                          ":*"
+                                        ]
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:aws:logs:us-east-1:724126532640:log-group:/aws/codebuild/",
+                                          {
+                                            "Ref": "TestBuildProject200EB7F7"
+                                          }
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "codebuild:BatchPutCodeCoverages",
+                                    "codebuild:BatchPutTestCases",
+                                    "codebuild:CreateReport",
+                                    "codebuild:CreateReportGroup",
+                                    "codebuild:UpdateReport"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::Join": [
+                                      "",
+                                      [
+                                        "arn:aws:codebuild:us-east-1:724126532640:report-group/",
+                                        {
+                                          "Ref": "TestBuildProject200EB7F7"
+                                        },
+                                        "-*"
+                                      ]
+                                    ]
+                                  }
+                                },
+                                {
+                                  "Action": [
+                                    "s3:GetBucket*",
+                                    "s3:GetObject*",
+                                    "s3:List*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": [
+                                    {
+                                      "Fn::GetAtt": [
+                                        "myMicroServicesArtifactsBucket6D949F8E",
+                                        "Arn"
+                                      ]
+                                    },
+                                    {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          {
+                                            "Fn::GetAtt": [
+                                              "myMicroServicesArtifactsBucket6D949F8E",
+                                              "Arn"
+                                            ]
+                                          },
+                                          "/*"
+                                        ]
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "Action": [
+                                    "kms:Decrypt",
+                                    "kms:DescribeKey",
+                                    "kms:Encrypt",
+                                    "kms:GenerateDataKey*",
+                                    "kms:ReEncrypt*"
+                                  ],
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+                                      "Arn"
+                                    ]
+                                  }
+                                }
+                              ],
+                              "Version": "2012-10-17"
+                            },
+                            "policyName": "TestBuildProjectRoleDefaultPolicyF85B9AEB",
+                            "roles": [
+                              {
+                                "Ref": "TestBuildProjectRole189F23AF"
+                              }
+                            ]
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_iam.CfnPolicy",
+                          "version": "2.96.2"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_iam.Policy",
+                      "version": "2.96.2"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_iam.Role",
+                  "version": "2.96.2"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "InterviewProjectStack/TestBuildProject/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::CodeBuild::Project",
+                  "aws:cdk:cloudformation:props": {
+                    "artifacts": {
+                      "type": "CODEPIPELINE"
+                    },
+                    "cache": {
+                      "type": "NO_CACHE"
+                    },
+                    "encryptionKey": {
+                      "Fn::GetAtt": [
+                        "myMicroServicesArtifactsBucketEncryptionKeyB7409C51",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "type": "LINUX_CONTAINER",
+                      "image": "aws/codebuild/standard:4.0",
+                      "imagePullCredentialsType": "CODEBUILD",
+                      "privilegedMode": false,
+                      "computeType": "BUILD_GENERAL1_SMALL"
+                    },
+                    "serviceRole": {
+                      "Fn::GetAtt": [
+                        "TestBuildProjectRole189F23AF",
+                        "Arn"
+                      ]
+                    },
+                    "source": {
+                      "type": "CODEPIPELINE",
+                      "buildSpec": "buildspec-test.yml"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_codebuild.CfnProject",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_codebuild.PipelineProject",
+              "version": "2.96.2"
+            }
+          },
+          "CDKMetadata": {
+            "id": "CDKMetadata",
+            "path": "InterviewProjectStack/CDKMetadata",
+            "children": {
+              "Default": {
+                "id": "Default",
+                "path": "InterviewProjectStack/CDKMetadata/Default",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.CfnResource",
+                  "version": "2.96.2"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "constructs.Construct",
+              "version": "10.2.70"
+            }
+          },
+          "BootstrapVersion": {
+            "id": "BootstrapVersion",
+            "path": "InterviewProjectStack/BootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnParameter",
+              "version": "2.96.2"
+            }
+          },
+          "CheckBootstrapVersion": {
+            "id": "CheckBootstrapVersion",
+            "path": "InterviewProjectStack/CheckBootstrapVersion",
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.CfnRule",
+              "version": "2.96.2"
+            }
+          }
+        },
+        "constructInfo": {
+          "fqn": "aws-cdk-lib.Stack",
+          "version": "2.96.2"
+        }
+      },
+      "Tree": {
+        "id": "Tree",
+        "path": "Tree",
+        "constructInfo": {
+          "fqn": "constructs.Construct",
+          "version": "10.2.70"
+        }
+      }
+    },
+    "constructInfo": {
+      "fqn": "aws-cdk-lib.App",
+      "version": "2.96.2"
+    }
+  }
+}
